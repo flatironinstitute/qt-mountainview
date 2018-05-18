@@ -3,13 +3,13 @@ QT += core gui network qml widgets concurrent
 CONFIG += c++11
 QMAKE_CXXFLAGS += -Wno-reorder #qaccordion
 
-#TODO: Do we need openmp for mountainview?
-CONFIG += mlcommon mvcommon openmp taskprogress
+# CONFIG += openmp ## removed open by jfm 5/18/2018
+CONFIG += mlcommon mvcommon taskprogress
 
 DESTDIR = ../bin
 OBJECTS_DIR = ../build
 MOC_DIR=../build
-TARGET = mountainview
+TARGET = qt-mountainview
 TEMPLATE = app
 
 RESOURCES += mountainview.qrc

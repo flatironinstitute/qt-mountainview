@@ -123,17 +123,17 @@ Mda32 compute_templates_in_parallel(const DiskReadMda32& X, const QVector<double
     Mda counts(1, K);
 
     bigint chunk_size = 1e5;
-#pragma omp parallel for
+//#pragma omp parallel for
     for (bigint t = 0; t < N; t += chunk_size) {
         Mda32 chunk;
-#pragma omp critical(compute_templates_in_parallel1)
+//#pragma omp critical(compute_templates_in_parallel1)
         {
             X.readChunk(chunk, 0, t - clip_size, M, chunk_size + 2 * clip_size);
         }
         Mda sums0;
         Mda counts0;
         get_sums_and_counts_for_templates(sums0, counts0, chunk, t - clip_size, times, labels, clip_size, K);
-#pragma omp critical(compute_templates_in_parallel2)
+//#pragma omp critical(compute_templates_in_parallel2)
         {
             for (bigint i = 0; i < M * T * K; i++) {
                 sums.set(sums.get(i) + sums0.get(i), i);

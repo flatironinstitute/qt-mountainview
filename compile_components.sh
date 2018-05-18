@@ -4,7 +4,7 @@
 QT_VERSION=`qmake -query QT_VERSION`
 if [[ "$QT_VERSION" =~ ^4.*$ ]]
 then
-  echo "You're trying to build MountainView with Qt4 ($QT_VERSION) but MountainView only supports Qt5"
+  echo "You're trying to build qt-mountainview with Qt4 ($QT_VERSION) but qt-mountainview only supports Qt5"
   echo "Please make sure qmake from Qt5 installation is first in your PATH."
   
   # try to find a Qt5 install in $HOME or /opt
@@ -78,13 +78,13 @@ else
 	echo ""
 	echo "Compilation successful."
 
-	RES=$(which mountainview)
+	RES=$(which qt-mountainview)
 	if [[ -z $RES ]]; then
 		echo ""
 		echo "******************************************"
-		echo "It appears that mountainview is not"
+		echo "It appears that qt-mountainview is not"
 		echo "found in your path. Be sure to add"
-		echo "mountainview/bin to your path. See the"
+		echo "qt-mountainview/bin to your path. See the"
 		echo "installation instructions for more"
 		echo "information."
 		echo "******************************************"
