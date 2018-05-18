@@ -485,7 +485,7 @@ void MVSpikeSprayComputer::compute()
         }
 
         MountainProcessRunner MT;
-        QString processor_name = "ms3.mv_subfirings";
+        QString processor_name = "mv.mv_subfirings";
         MT.setProcessorName(processor_name);
 
         QMap<QString, QVariant> params;
@@ -511,7 +511,7 @@ void MVSpikeSprayComputer::compute()
     QString clips_path;
     {
         MountainProcessRunner MT;
-        QString processor_name = "ms3.mv_extract_clips";
+        QString processor_name = "mv.mv_extract_clips";
         MT.setProcessorName(processor_name);
 
         QMap<QString, QVariant> params;

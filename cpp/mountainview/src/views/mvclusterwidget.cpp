@@ -511,7 +511,7 @@ void MVClusterWidgetComputer::compute()
         }
 
         MountainProcessRunner MT;
-        QString processor_name = "ms3.mv_subfirings";
+        QString processor_name = "mv.mv_subfirings";
         MT.setProcessorName(processor_name);
 
         task.log(QString("firings = %1").arg(firings.makePath()));
@@ -535,7 +535,7 @@ void MVClusterWidgetComputer::compute()
     QString features_path;
     if (features_mode == "pca") {
         MountainProcessRunner MT;
-        QString processor_name = "ms3.mv_extract_clips_features";
+        QString processor_name = "mv.mv_extract_clips_features";
         MT.setProcessorName(processor_name);
 
         QMap<QString, QVariant> params;

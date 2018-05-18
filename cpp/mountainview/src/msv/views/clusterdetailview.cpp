@@ -1462,7 +1462,7 @@ DiskReadMda mp_compute_templates(const QString& mlproxy_url, const QString& time
     TaskProgress task(TaskProgress::Calculate, "mp_compute_templates");
     task.log("mlproxy_url: " + mlproxy_url);
     MountainProcessRunner X;
-    QString processor_name = "ms3.compute_templates";
+    QString processor_name = "mv.compute_templates";
     X.setProcessorName(processor_name);
 
     QMap<QString, QVariant> params;
@@ -1488,7 +1488,7 @@ void mp_compute_templates_stdevs(DiskReadMda32& templates_out, DiskReadMda32& st
     TaskProgress task(TaskProgress::Calculate, "compute templates stdevs");
     task.log("mlproxy_url: " + mlproxy_url);
     MountainProcessRunner X;
-    QString processor_name = "ms3.mv_compute_templates";
+    QString processor_name = "mv.mv_compute_templates";
     X.setProcessorName(processor_name);
 
     QMap<QString, QVariant> params;

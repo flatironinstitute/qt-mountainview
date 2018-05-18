@@ -27,6 +27,7 @@ equals(GUI,"on") {
   SUBDIRS += $$ifcomponent(mvcommon,cpp/mvcommon/src/mvcommon.pro)
   SUBDIRS += $$ifcomponent(mountainview,cpp/mountainview/src/mountainview.pro)
 }
+SUBDIRS += packages/mv/mv.pro
 
 DISTFILES += features/*
 DISTFILES += debian/*

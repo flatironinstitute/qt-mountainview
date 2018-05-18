@@ -161,7 +161,7 @@ void MVDiscrimHistViewComputer::compute()
 
     MountainProcessRunner MPR;
     MPR.setMLProxyUrl(mlproxy_url);
-    MPR.setProcessorName("ms3.mv_discrimhist");
+    MPR.setProcessorName("mv.mv_discrimhist");
 
     QStringList clusters_strlist;
     foreach (int cluster, cluster_numbers) {

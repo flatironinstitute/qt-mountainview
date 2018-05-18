@@ -272,7 +272,7 @@ void MVAmpHistView3::slot_current_cluster_changed()
 DiskReadMda compute_amplitudes(QString timeseries, QString firings, QString mlproxy_url)
 {
     MountainProcessRunner X;
-    QString processor_name = "ms3.mv_compute_amplitudes";
+    QString processor_name = "mv.mv_compute_amplitudes";
     X.setProcessorName(processor_name);
 
     QMap<QString, QVariant> params;

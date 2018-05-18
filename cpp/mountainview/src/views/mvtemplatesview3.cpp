@@ -272,7 +272,7 @@ void MVTemplatesView3Calculator::mv_compute_templates_stdevs(DiskReadMda& templa
     TaskProgress task(TaskProgress::Calculate, "mv_compute_templates_stdevs");
     task.log("mlproxy_url: " + mlproxy_url);
     MountainProcessRunner X;
-    QString processor_name = "ms3.mv_compute_templates";
+    QString processor_name = "mv.mv_compute_templates";
     X.setProcessorName(processor_name);
 
     QMap<QString, QVariant> params;
