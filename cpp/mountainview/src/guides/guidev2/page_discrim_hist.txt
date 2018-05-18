@@ -1,0 +1,8 @@
+The next step is to identify candidates for merging.
+
+Click below to open the discrimination histograms for the most likely cluster pairs to be merged.
+
+Select those pairs that are potential candidates for merging. Then add the "merge_candidate" tag to these pairs using the right mouse button.
+
+
+

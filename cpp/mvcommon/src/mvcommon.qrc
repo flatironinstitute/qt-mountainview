@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/calculator.png</file>
+        <file>images/calculator-no.png</file>
+        <file>images/down.png</file>
+        <file>images/process.png</file>
+        <file>images/up.png</file>
+        <file>images/pop-in.png</file>
+        <file>images/pop-out.png</file>
+        <file>images/gear.png</file>
+        <file>images/zoom-out.png</file>
+        <file>images/zoom-in.png</file>
+        <file>images/vertical-zoom-in.png</file>
+        <file>images/vertical-zoom-out.png</file>
+        <file>images/move-up.png</file>
+        <file>images/move-down.png</file>
+        <file>images/horizontal-zoom-out.png</file>
+        <file>images/horizontal-zoom-in.png</file>
+        <file>images/right.png</file>
+        <file>images/left.png</file>
+    </qresource>
+</RCC>

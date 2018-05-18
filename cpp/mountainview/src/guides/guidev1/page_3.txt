@@ -1,0 +1,6 @@
+Click below to open the cluster auto-correlograms. Neurons have a refractory period between action potentials, necessitating a dip in the autocorrelogram.
+     
+Some clusters may be heavily contaminated by or completely made up of artifacts. These often show up as having peaks at 0 in their autocorrelogram.
+
+Reject these clusters by selecting all of them —> Right click —> Add Tag —> rejected.
+

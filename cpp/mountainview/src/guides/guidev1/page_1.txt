@@ -1,0 +1,5 @@
+Click below to open the cluster details view.
+
+The average spike waveform is shown for each cluster with firing rate and event counts shown at the bottom (with zooming). To see the noise spread, use the tool button in the upper-right corner to toggle on the std. dev. shading.
+
+You can select raw, filtered, or whitened under "general options" on the control panel.

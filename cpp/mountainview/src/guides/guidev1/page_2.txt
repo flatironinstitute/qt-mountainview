@@ -1,0 +1,9 @@
+Every detected event ends up in a cluster. As such, some clusters have a large proportion of outliers and noise events.
+
+Click on "Event Filter" in the left panel. For outlier score, we suggest a value of 3. For detectability score, we suggest a value of 6. See the manuscript for details on these metrics. 
+
+Click on the checkbox to enable the event filter. Then use the "Recalc" button to recalculate the views. 
+     
+Some clusters may have disappeared, now containing 0 spikes. Reject these clusters by selecting all of them —> Right click —> Add Tag —> rejected.
+
+You can hide/show differently labeled cluster groupings using the cluster visibility options on the control panel.

@@ -1,0 +1,22 @@
+include(./openmp.prf)
+
+CONFIG(no_fftw3) {
+    DEFINES += NO_FFTW3
+} else {
+    packagesExist(fftw3) {
+      CONFIG += link_pkgconfig
+      PKGCONFIG += fftw3
+      LIBS += -lfftw3_threads
+    } else {
+      load(configure)
+      QMAKE_CONFIG_TESTS_DIR=$${ML_DIR}/config.tests
+      qtCompileTest(fftw3) {
+        LIBS += -lfftw3 -lfftw3_threads
+      } else {
+        warning("FFTW3 library could not be detected. Still trying to use it,\
+                 but if the build fails, you may need to manually configure your \
+                 build system to find it or disable fftw3 with CONFIG += no_fftw3")
+        LIBS += -lfftw3 -lfftw3_threads
+      }
+    }
+}

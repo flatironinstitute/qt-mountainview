@@ -1,0 +1,17 @@
+MVCOMMON_DIR=$${ML_SRCDIR}/mvcommon
+
+INCLUDEPATH += $${MVCOMMON_DIR}/include
+INCLUDEPATH += $${MVCOMMON_DIR}/include/core
+INCLUDEPATH += $${MVCOMMON_DIR}/include/misc
+INCLUDEPATH += $${MVCOMMON_DIR}/3rdparty/qaccordion/include
+
+RESOURCES += $${MVCOMMON_DIR}/src/mvcommon.qrc \
+    $${MVCOMMON_DIR}/3rdparty/qaccordion/icons/qaccordionicons.qrc
+
+CONFIG(mvcommon_shared) {
+  LIBS += -L$${MVCOMMON_DIR}/lib -lmvcommon
+} else {
+  MVCOMMONLIB = $${MVCOMMON_DIR}/lib/libmvcommon.a
+  LIBS += $$MVCOMMONLIB
+}
+unix:PRE_TARGETDEPS += $$MVCOMMONLIB
