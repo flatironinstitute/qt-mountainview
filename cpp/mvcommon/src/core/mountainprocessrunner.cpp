@@ -318,6 +318,7 @@ void MountainProcessRunner::runProcess()
 
 QString MountainProcessRunnerPrivate::create_temporary_output_file_name(const QString& mlproxy_url, const QString& processor_name, const QMap<QString, QVariant>& params, const QString& parameter_name)
 {
+    (void)mlproxy_url;
     QString str = processor_name + ":";
     QStringList keys = params.keys();
     qSort(keys);

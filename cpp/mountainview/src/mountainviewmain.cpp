@@ -165,6 +165,29 @@ void sig_handler(int signum)
     abort();
 }
 
+QString get_config_fname() {
+    QString config_fname=qgetenv("ML_CONFIG_FILE");
+    if (config_fname.isEmpty()) {
+        config_fname=QDir::homePath()+"/.mountainlab/mountainlab.env";
+    }
+    return config_fname;
+}
+
+void process_mountainlab_env_file() {
+    QString config_fname=get_config_fname();
+    QString txt=TextFile::read(config_fname);
+    if (txt.isEmpty()) return;
+    QStringList lines=txt.split("\n");
+    foreach (QString line,lines) {
+        QStringList vals=line.split("=");
+        if (vals.count()==2) {
+            QString val1=vals[0].trimmed();
+            QString val2=vals[1].trimmed();
+            qputenv(val1.toUtf8().data(),val2.toUtf8().data());
+        }
+    }
+}
+
 int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
@@ -201,6 +224,8 @@ int main(int argc, char* argv[])
     CloseMeHandler::start();
 
     setbuf(stdout, 0);
+
+    process_mountainlab_env_file();
 
     printf("Parsing command-line parameters...\n");
     CLParams CLP(argc, argv);

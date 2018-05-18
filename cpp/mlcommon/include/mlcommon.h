@@ -47,7 +47,7 @@ QString makeRandomId(int numchars = 10);
 bool threadInterruptRequested();
 bool inGuiThread();
 QString tempPath();
-QString mountainlabBasePath();
+//QString mountainlabBasePath();
 QString mlLogPath();
 QString resolvePath(const QString& basepath, const QString& path);
 void mkdirIfNeeded(const QString& path);

@@ -218,6 +218,7 @@ QString find_ancestor_path_with_file(QString path, QString file_name)
         return "";
 }
 
+/*
 QString MLUtil::mountainlabBasePath()
 {
     qWarning() << "mountainlabBasePath should no longer be used";
@@ -228,6 +229,7 @@ QString MLUtil::mountainlabBasePath()
     }
     return ret;
 }
+*/
 
 void mkdir_if_doesnt_exist(const QString& path)
 {
@@ -294,9 +296,12 @@ static QString s_temp_path = "";
 QString MLUtil::tempPath()
 {
     //TODO: for now this is hard-coded, but we need to fix this to use the environment variable and the mountainlab.env
+    QString tmp_path=qgetenv("ML_TEMPORARY_DIRECTORY");
+    if (tmp_path.isEmpty()) {
+        tmp_path="/tmp/mountainlab-tmp";
+    }
+    return tmp_path;
 
-    QString ret = "/tmp/mountainlab-tmp";
-    return ret;
     /*
     if (!s_temp_path.isEmpty())
         return s_temp_path;
@@ -834,6 +839,7 @@ QString system_call_return_output(QString cmd)
     return ret.trimmed();
 }
 
+/*
 QString locate_file_with_checksum(QString checksum, QString fcs, int size, bool allow_downloads)
 {
     QString extra_args = "";
@@ -845,6 +851,7 @@ QString locate_file_with_checksum(QString checksum, QString fcs, int size, bool 
     //return lines.last();
     return ret;
 }
+*/
 
 QString download_file_to_temp_dir(QString url)
 {
@@ -1101,11 +1108,19 @@ QJsonValue MLUtil::configValue(const QString& group, const QString& key)
 
 QStringList get_local_search_paths()
 {
-    QStringList local_search_paths = MLUtil::configResolvedPathList("prv", "local_search_paths");
+    //QStringList local_search_paths = MLUtil::configResolvedPathList("prv", "local_search_paths");
+    QStringList local_search_paths;
     QString temporary_path = MLUtil::tempPath();
     if (!temporary_path.isEmpty()) {
         local_search_paths << temporary_path;
     }
+    QStringList additional_prv_search_directories=((QString)qgetenv("ML_ADDITIONAL_PRV_SEARCH_DIRECTORIES")).split(":");
+    foreach (QString path,additional_prv_search_directories) {
+        if (!path.isEmpty()) {
+            local_search_paths << path;
+        }
+    }
+
     return local_search_paths;
 }
 
@@ -1250,6 +1265,7 @@ QJsonObject MLUtil::createPrvObject(const QString& file_or_dir_path)
     }
 }
 
+/*
 bool file_matches_prv_object(QString file_path, const QJsonObject& obj)
 {
     if (QFile::exists(file_path)) {
@@ -1321,7 +1337,9 @@ bool directory_matches_prv_object(QString dir_path, const QJsonObject& obj, bool
 
     return true;
 }
+*/
 
+/*
 QString find_directory_2(const QJsonObject& obj, QString base_path, bool recursive, bool verbose)
 {
     if (directory_matches_prv_object(base_path, obj, verbose))
@@ -1348,6 +1366,7 @@ QString find_directory_in_search_paths(const QJsonObject& obj, const QStringList
     }
     return "";
 }
+*/
 
 QString find_file_2(QString directory, QString checksum, QString fcs_optional, bigint size, bool recursive, bool verbose)
 {
@@ -1433,6 +1452,8 @@ QString MLUtil::locatePrv(const QJsonObject& obj, const QStringList& local_searc
         return find_local_file(size, checksum, fcs, local_search_paths, false);
     }
     else {
+        return "";
+        /*
         QStringList search_paths = local_search_paths;
         QString original_path = obj.value("original_path").toString();
         //it is a directory
@@ -1442,5 +1463,6 @@ QString MLUtil::locatePrv(const QJsonObject& obj, const QStringList& local_searc
         }
         QString fname = find_directory_in_search_paths(obj, search_paths);
         return fname;
+        */
     }
 }
