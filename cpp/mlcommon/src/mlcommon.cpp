@@ -293,6 +293,11 @@ QString MLUtil::computeSha1SumOfDirectory(const QString& path)
 static QString s_temp_path = "";
 QString MLUtil::tempPath()
 {
+    //TODO: for now this is hard-coded, but we need to fix this to use the environment variable and the mountainlab.env
+
+    QString ret = "/tmp/mountainlab-tmp";
+    return ret;
+    /*
     if (!s_temp_path.isEmpty())
         return s_temp_path;
 
@@ -304,6 +309,7 @@ QString MLUtil::tempPath()
 
     s_temp_path = tmp + "/mountainlab";
     return s_temp_path;
+    */
 }
 
 QVariant clp_string_to_variant(const QString& str);
