@@ -24,42 +24,49 @@
 #include "mv_main.h"
 //#include "p_multineighborhood_sort.h"
 //#include "p_preprocess.h"
-#include "p_run_metrics_script.h"
-#include "p_spikeview_metrics.h"
 //#include "p_spikeview_templates.h"
 //#include "omp.h"
 //#include "p_synthesize_timeseries.h"
-#include "p_combine_firing_segments.h"
-#include "p_extract_firings.h"
-#include "p_concat_timeseries.h"
-#include "p_banjoview_cross_correlograms.h"
+
 #include "p_create_multiscale_timeseries.h"
 //#include "p_bandpass_filter.h"
 //#include "p_whiten.h"
 #include "p_extract_clips.h"
 #include "p_compute_templates.h"
-#include "p_create_firings.h"
-#include "p_combine_firings.h"
-#include "p_apply_timestamp_offset.h"
-#include "p_link_segments.h"
-#include "p_cluster_metrics.h"
+
+#include "p_mv_compute_templates.h"
+#include "p_mv_discrimhist.h"
+
+#include "p_mv_compute_amplitudes.h"
+
+#if 0
+#include "p_confusion_matrix.h"
+#include "p_reorder_labels.h"
+#include "p_mask_out_artifacts.h"
+#include "p_compute_amplitudes.h"
 #include "p_isolation_metrics.h"
 #include "p_concat_firings.h"
 #include "p_concat_timeseries.h"
 #include "p_split_firings.h"
 #include "p_load_test.h"
-#include "p_compute_amplitudes.h"
-#include "p_confusion_matrix.h"
-#include "p_reorder_labels.h"
-#include "p_mask_out_artifacts.h"
-#include "p_mv_compute_templates.h"
-#include "p_mv_compute_amplitudes.h"
-#include "p_mv_discrimhist.h"
+#include "p_cluster_metrics.h"
+#include "p_apply_timestamp_offset.h"
+#include "p_link_segments.h"
+#include "p_combine_firings.h"
+#include "p_create_firings.h"
+#include "p_run_metrics_script.h"
+#include "p_spikeview_metrics.h"
+#include "p_combine_firing_segments.h"
+#include "p_extract_firings.h"
+#include "p_concat_timeseries.h"
+#include "p_banjoview_cross_correlograms.h"
+#endif
 
 QJsonObject get_spec()
 {
     QJsonArray processors;
 
+#if 0
     {
         ProcessorSpec X("mv.run_metrics_script", "0.1");
         X.addInputs("metrics", "script");
@@ -73,6 +80,7 @@ QJsonObject get_spec()
         X.addRequiredParameter("samplerate");
         processors.push_back(X.get_spec());
     }
+#endif
 #ifndef NO_FFTW3
     /*{
         ProcessorSpec X("spikeview.templates", "0.16");
@@ -85,6 +93,7 @@ QJsonObject get_spec()
         processors.push_back(X.get_spec());
     }*/
 #endif
+#if 0
     {
         ProcessorSpec X("banjoview.cross_correlograms", "0.11");
         X.addInputs("firings");
@@ -131,6 +140,7 @@ QJsonObject get_spec()
         X.addOutputs("timeseries_out");
         processors.push_back(X.get_spec());
     }
+#endif
     {
         ProcessorSpec X("mv.create_multiscale_timeseries", "0.1");
         X.addInputs("timeseries");
@@ -221,6 +231,7 @@ QJsonObject get_spec()
         X.addOptionalParameter("clusters", "Comma-separated list of clusters to inclue", "");
         processors.push_back(X.get_spec());
     }
+#if 0
     {
         ProcessorSpec X("mv.reorder_labels", "0.11");
         X.addInputs("templates", "firings");
@@ -296,6 +307,7 @@ QJsonObject get_spec()
         //X.addRequiredParameters();
         processors.push_back(X.get_spec());
     }
+#endif
     {
         ProcessorSpec X("mv.mv_discrimhist", "0.1");
         X.addInputs("timeseries", "firings");
@@ -303,6 +315,7 @@ QJsonObject get_spec()
         X.addRequiredParameters("clusters");
         processors.push_back(X.get_spec());
     }
+#if 0
     {
         ProcessorSpec X("mv.concat_firings", "0.13");
         X.addInputs("firings_list");
@@ -349,6 +362,7 @@ QJsonObject get_spec()
         X.addOptionalParameter("interval_size","",2000);
         processors.push_back(X.get_spec());
     }
+#endif
     {
         ProcessorSpec X("mv.mv_compute_templates", "0.1");
         X.addInputs("timeseries","firings");
@@ -388,6 +402,7 @@ int main(int argc, char* argv[])
 
     QString pname;
     bool requirements_only = false;
+    (void)requirements_only;
     if (arg1 == "spec") {
         QJsonObject spec = get_spec();
         if (arg2.isEmpty()) {
@@ -434,7 +449,11 @@ int main(int argc, char* argv[])
         }
     }
 
-    if (pname == "mv.run_metrics_script") {
+    if (pname == "dummy.dummy.dummy") {
+
+    }
+#if 0
+    else if (pname == "mv.run_metrics_script") {
         QString metrics = CLP.named_parameters["metrics"].toString();
         QString script = CLP.named_parameters["script"].toString();
         QString metrics_out = CLP.named_parameters["metrics_out"].toString();
@@ -447,6 +466,7 @@ int main(int argc, char* argv[])
         opts.samplerate = CLP.named_parameters["samplerate"].toDouble();
         ret = p_spikeview_metrics1(firings, metrics_out, opts);
     }
+#endif
 #ifndef NO_FFTW3
     /*else if (pname == "spikeview.templates") {
         QString timeseries = CLP.named_parameters["timeseries"].toString();
@@ -464,6 +484,7 @@ int main(int argc, char* argv[])
         ret = p_spikeview_templates(timeseries, firings, templates_out, opts);
     }*/
 #endif
+#if 0
     else if (pname == "banjoview.cross_correlograms") {
         QString firings = CLP.named_parameters["firings"].toString();
         QString correlograms_out = CLP.named_parameters["correlograms_out"].toString();
@@ -534,6 +555,7 @@ int main(int argc, char* argv[])
         QString timeseries_out = CLP.named_parameters["timeseries_out"].toString();
         ret = p_concat_timeseries(timeseries_list, timeseries_out);
     }
+#endif
     else if (pname == "mv.create_multiscale_timeseries") {
         QString timeseries = CLP.named_parameters["timeseries"].toString();
         QString timeseries_out = CLP.named_parameters["timeseries_out"].toString();
@@ -648,6 +670,7 @@ int main(int argc, char* argv[])
         QList<int> clusters = MLUtil::stringListToIntList(CLP.named_parameters["clusters"].toString().split(",", QString::SkipEmptyParts));
         ret = p_compute_templates(timeseries_list, firings, templates_out, clip_size, clusters);
     }
+#if 0
     else if (pname == "mv.reorder_labels") {
         QString templates = CLP.named_parameters["templates"].toString();
         QString firings = CLP.named_parameters["firings"].toString();
@@ -718,6 +741,7 @@ int main(int argc, char* argv[])
         QStringList firings_out_list = MLUtil::toStringList(CLP.named_parameters["firings_out_list"]);
         ret = p_split_firings(timeseries_list, firings, firings_out_list);
     }
+#endif
     else if (pname == "mv.mv_discrimhist") {
         QString timeseries = CLP.named_parameters["timeseries"].toString();
         QString firings = CLP.named_parameters["firings"].toString();
@@ -738,6 +762,7 @@ int main(int argc, char* argv[])
         ret = p_extract_firings(firings, clusters, firings_out);
     }
     */
+#if 0
     else if (pname == "mv.concat_firings") {
         QStringList timeseries_list = MLUtil::toStringList(CLP.named_parameters["timeseries_list"]);
         QStringList firings_list = MLUtil::toStringList(CLP.named_parameters["firings_list"]);
@@ -788,6 +813,7 @@ int main(int argc, char* argv[])
         bigint interval_size = CLP.named_parameters["interval_size"].toDouble();
         ret = p_mask_out_artifacts(timeseries,timeseries_out,threshold,interval_size);
     }
+#endif
     else if (pname == "mv.mv_compute_templates") {
         QString timeseries = CLP.named_parameters["timeseries"].toString();
         QString firings = CLP.named_parameters["firings"].toString();
