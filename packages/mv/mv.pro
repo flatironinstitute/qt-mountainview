@@ -14,15 +14,15 @@ TEMPLATE = app
 #QMAKE_LFLAGS += -fopenmp
 
 #FFTW
-USE_FFTW3=$$(USE_FFTW3)
-CONFIG("no_fftw3") {
-    warning(Not using FFTW3)
-}
-else {
-    LIBS += -lfftw3f -lfftw3f_threads
-    SOURCES += p_spikeview_templates.cpp
-    HEADERS += p_spikeview_templates.h
-}
+#USE_FFTW3=$$(USE_FFTW3)
+#CONFIG("no_fftw3") {
+#    warning(Not using FFTW3)
+#}
+#else {
+#    LIBS += -lfftw3f -lfftw3f_threads
+#    SOURCES += p_spikeview_templates.cpp
+#    HEADERS += p_spikeview_templates.h
+#}
 
 #-std=c++11   # AHB removed since not in GNU gcc 4.6.3
 
@@ -60,7 +60,7 @@ HEADERS += \
     p_extract_clips.h \
     p_create_firings.h \
     p_combine_firings.h \
-    p_whiten.h \
+    #p_whiten.h \
     p_apply_timestamp_offset.h \
     p_link_segments.h \
     p_cluster_metrics.h \
@@ -72,7 +72,7 @@ HEADERS += \
     p_isolation_metrics.h \
     p_confusion_matrix.h \
     p_reorder_labels.h \
-    p_bandpass_filter.h \
+    #p_bandpass_filter.h \
     p_mask_out_artifacts.h \
     p_mv_compute_templates.h \
     p_mv_compute_amplitudes.h extract_clips.h get_principal_components.h \
@@ -82,7 +82,7 @@ SOURCES += \
     p_extract_clips.cpp \
     p_create_firings.cpp \
     p_combine_firings.cpp \
-    p_whiten.cpp \
+    #p_whiten.cpp \
     p_apply_timestamp_offset.cpp \
     p_link_segments.cpp \
     p_cluster_metrics.cpp \
@@ -94,7 +94,7 @@ SOURCES += \
     p_isolation_metrics.cpp \
     p_confusion_matrix.cpp \
     p_reorder_labels.cpp \
-    p_bandpass_filter.cpp \
+    #p_bandpass_filter.cpp \
     p_mask_out_artifacts.cpp \
     p_mv_compute_templates.cpp \
     p_mv_compute_amplitudes.cpp extract_clips.cpp get_principal_components.cpp \

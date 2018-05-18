@@ -27,15 +27,15 @@
 #include "p_run_metrics_script.h"
 #include "p_spikeview_metrics.h"
 #include "p_spikeview_templates.h"
-#include "omp.h"
+//#include "omp.h"
 //#include "p_synthesize_timeseries.h"
 #include "p_combine_firing_segments.h"
 #include "p_extract_firings.h"
 #include "p_concat_timeseries.h"
 #include "p_banjoview_cross_correlograms.h"
 #include "p_create_multiscale_timeseries.h"
-#include "p_bandpass_filter.h"
-#include "p_whiten.h"
+//#include "p_bandpass_filter.h"
+//#include "p_whiten.h"
 #include "p_extract_clips.h"
 #include "p_compute_templates.h"
 #include "p_create_firings.h"
@@ -142,7 +142,7 @@ QJsonObject get_spec()
 
 
 #ifndef NO_FFTW3
-    {
+    /*{
         ProcessorSpec X("mv.bandpass_filter", "0.20");
         X.addInputs("timeseries");
         X.addOutputs("timeseries_out");
@@ -152,9 +152,9 @@ QJsonObject get_spec()
         X.addOptionalParameter("subsample_factor", "", 1);
         X.can_return_requirements = true;
         processors.push_back(X.get_spec());
-    }
+    }*/
 #endif
-    {
+    /*{
         ProcessorSpec X("mv.whiten", "0.1");
         X.addInputs("timeseries");
         X.addOutputs("timeseries_out");
@@ -187,6 +187,7 @@ QJsonObject get_spec()
         X.addOptionalParameter("quantization_unit", "", 0);
         processors.push_back(X.get_spec());
     }
+    */
     {
         ProcessorSpec X("mv.extract_clips", "0.11");
         X.addInput("timeseries");
@@ -428,8 +429,8 @@ int main(int argc, char* argv[])
     if (CLP.named_parameters.contains("_request_num_threads")) {
         int num_threads = CLP.named_parameters.value("_request_num_threads", 0).toInt();
         if (num_threads) {
-            qDebug().noquote() << "Setting num threads:" << num_threads;
-            omp_set_num_threads(num_threads);
+            //qDebug().noquote() << "Setting num threads:" << num_threads;
+            //omp_set_num_threads(num_threads);
         }
     }
 
@@ -544,7 +545,7 @@ int main(int argc, char* argv[])
         ret = p_create_multiscale_timeseries(timeseries,timeseries_out,tempdir);
     }
 #ifndef NO_FFTW3
-    else if (pname == "mv.bandpass_filter") {
+    /*else if (pname == "mv.bandpass_filter") {
         QString timeseries = CLP.named_parameters["timeseries"].toString();
         QString timeseries_out = CLP.named_parameters["timeseries_out"].toString();
         Bandpass_filter_opts opts;
@@ -567,9 +568,9 @@ int main(int argc, char* argv[])
                 printf("Error in processor while trying to retrieve requirements.\n");
             }
         }
-    }
+    }*/
 #endif
-    else if (pname == "mv.whiten") {
+    /*else if (pname == "mv.whiten") {
         QString timeseries = CLP.named_parameters["timeseries"].toString();
         QString timeseries_out = CLP.named_parameters["timeseries_out"].toString();
         Whiten_opts opts;
@@ -613,6 +614,7 @@ int main(int argc, char* argv[])
         opts.quantization_unit = CLP.named_parameters["quantization_unit"].toDouble();
         ret = p_apply_whitening_matrix(timeseries, whitening_matrix, timeseries_out, opts);
     }
+    */
     else if (pname == "mv.extract_clips") {
         QStringList timeseries_list = MLUtil::toStringList(CLP.named_parameters["timeseries"]);
         QString event_times = CLP.named_parameters["event_times"].toString();
