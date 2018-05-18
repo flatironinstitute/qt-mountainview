@@ -186,7 +186,7 @@ void MountainProcessRunner::runProcess()
         QStringList args;
         //args << "run-process";
         args << d->m_processor_name;
-        args << "--iop";
+        args << "--iops";
         QStringList keys = d->m_parameters.keys();
         foreach (QString key, keys) {
             args << QString("%1:%2").arg(key).arg(d->m_parameters.value(key).toString());
