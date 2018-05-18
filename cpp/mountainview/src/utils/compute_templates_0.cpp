@@ -19,7 +19,7 @@
 #include "mlcommon.h"
 #include <math.h>
 #include "get_sort_indices.h"
-#include "omp.h"
+//#include "omp.h" //removed by jfm on 5/18/18
 
 Mda compute_templates_0(const DiskReadMda& X, Mda& firings, int clip_size)
 {
