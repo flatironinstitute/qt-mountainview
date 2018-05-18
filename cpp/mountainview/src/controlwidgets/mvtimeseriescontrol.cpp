@@ -175,7 +175,8 @@ void TimeseriesCalculator::run()
     {
         MountainProcessRunner MPR;
         //MPR.setProcessorName("bandpass_filter");
-        MPR.setProcessorName("ms3.bandpass_filter");
+        //MPR.setProcessorName("mv.bandpass_filter");
+        MPR.setProcessorName("ephys.bandpass_filter");
         QVariantMap params;
         params["timeseries"] = raw;
         params["samplerate"] = samplerate;
@@ -194,7 +195,8 @@ void TimeseriesCalculator::run()
     else {
         MountainProcessRunner MPR;
         //MPR.setProcessorName("whiten");
-        MPR.setProcessorName("ms3.whiten");
+        //MPR.setProcessorName("mv.whiten");
+        MPR.setProcessorName("ephys.whiten");
         QVariantMap params2;
         params2["timeseries"] = out;
         MPR.setInputParameters(params2);
