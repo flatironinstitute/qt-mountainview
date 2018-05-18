@@ -26,7 +26,7 @@
 //#include "p_preprocess.h"
 #include "p_run_metrics_script.h"
 #include "p_spikeview_metrics.h"
-#include "p_spikeview_templates.h"
+//#include "p_spikeview_templates.h"
 //#include "omp.h"
 //#include "p_synthesize_timeseries.h"
 #include "p_combine_firing_segments.h"
@@ -74,7 +74,7 @@ QJsonObject get_spec()
         processors.push_back(X.get_spec());
     }
 #ifndef NO_FFTW3
-    {
+    /*{
         ProcessorSpec X("spikeview.templates", "0.16");
         X.addInputs("timeseries", "firings");
         X.addOutputs("templates_out");
@@ -83,7 +83,7 @@ QJsonObject get_spec()
         X.addOptionalParameters("samplerate", "freq_min", "freq_max");
         X.addOptionalParameter("subtract_temporal_mean", "", "false");
         processors.push_back(X.get_spec());
-    }
+    }*/
 #endif
     {
         ProcessorSpec X("banjoview.cross_correlograms", "0.11");
@@ -448,7 +448,7 @@ int main(int argc, char* argv[])
         ret = p_spikeview_metrics1(firings, metrics_out, opts);
     }
 #ifndef NO_FFTW3
-    else if (pname == "spikeview.templates") {
+    /*else if (pname == "spikeview.templates") {
         QString timeseries = CLP.named_parameters["timeseries"].toString();
         QString firings = CLP.named_parameters["firings"].toString();
         QString templates_out = CLP.named_parameters["templates_out"].toString();
@@ -462,7 +462,7 @@ int main(int argc, char* argv[])
             opts.filt_padding = 50;
         opts.subtract_temporal_mean = (CLP.named_parameters.value("subtract_temporal_mean") == "true");
         ret = p_spikeview_templates(timeseries, firings, templates_out, opts);
-    }
+    }*/
 #endif
     else if (pname == "banjoview.cross_correlograms") {
         QString firings = CLP.named_parameters["firings"].toString();
