@@ -12,7 +12,7 @@ Since ephys-viz is currently being developed, it does not have nearly as much fu
 
 * Install Qt5 (see below)
 
-* Clone this repository into ~/.mountainlab/packages (or whatever directory you are using for mountainlab-js packages. It is important that you install this in a location where mountainlab-js searches for processor packages.
+* Clone this repository into ~/.mountainlab/packages (or whatever directory you are using for mountainlab-js packages). It is important that you install this in a location where mountainlab-js searches for processor packages.
 
 * Compile using `./compile_components.sh`
 
