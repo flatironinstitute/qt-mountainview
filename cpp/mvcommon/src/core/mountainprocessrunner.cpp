@@ -186,9 +186,10 @@ void MountainProcessRunner::runProcess()
         QStringList args;
         //args << "run-process";
         args << d->m_processor_name;
+        args << "--iop";
         QStringList keys = d->m_parameters.keys();
         foreach (QString key, keys) {
-            args << QString("--%1=%2").arg(key).arg(d->m_parameters.value(key).toString());
+            args << QString("%1:%2").arg(key).arg(d->m_parameters.value(key).toString());
         }
         //right now we can't detach while running locally
         //if (d->m_detach) {
@@ -204,7 +205,7 @@ void MountainProcessRunner::runProcess()
             }
         }
 
-        QString exe = "mp-run-process";
+        QString exe = "ml-run-process";
         task.log(exe + " " + args.join(" "));
 
         QProcess* process0 = new QProcess;
