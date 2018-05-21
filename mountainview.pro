@@ -36,3 +36,34 @@ deb.target = deb
 deb.commands = debuild $(DEBUILD_OPTS) -us -uc
 
 QMAKE_EXTRA_TARGETS += deb
+
+# added 5/21/2018 by tjd to support Qt-included distribution of mv as a mountainlab-js package
+standalone:unix{
+    macx: {
+        # bugs in earlier versions of macdeployqt
+        MAJ_REQ = 5
+        MIN_REQ = 7
+        isEmpty(QT.core.frameworks){
+            error("The Qt libs at $$[QT_INSTALL_LIBS] were not built as Mac frameworks, so can't be used with the macdeployqt tool to build standalone Mountainview (conda/brew Qt?). Use the installer from qt.io.")
+        }
+    } else {
+        MAJ_REQ = 5
+        MIN_REQ = 5
+    }
+    lessThan(QT_MAJOR_VERSION, $$MAJ_REQ) | \
+    if(equals(QT_MAJOR_VERSION, $$MAJ_REQ):lessThan(QT_MINOR_VERSION, $$MIN_REQ)) {
+        error("Building standalone on $${QMAKE_HOST.os} requires Qt $${MAJ_REQ}.$${MIN_REQ} or greater, but Qt $$[QT_VERSION] was detected.")
+    }
+
+    macx: {
+        QtDeploy.commands += "cp $${ML_PACKAGESDIR}/mv/bin/mv.mp $${ML_BINDIR}/qt-mountainview.app/Contents/MacOS/ ;"
+        QtDeploy.commands += "$$[QT_INSTALL_BINS]/macdeployqt $${ML_BINDIR}/qt-mountainview.app -always-overwrite -executable=$$ML_BINDIR/qt-mountainview.app/Contents/MacOS/mv.mp"
+        QtDeploy.path = / # dummy path required for target to be valid
+
+        message(QtDeploy.commands=$$QtDeploy.commands)
+        INSTALLS += QtDeploy
+
+    } else {
+        error('Linux standalone mode not implemented yet')
+    }
+}

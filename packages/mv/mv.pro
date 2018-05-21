@@ -9,6 +9,7 @@ OBJECTS_DIR = build
 MOC_DIR= build
 TARGET = mv.mp
 TEMPLATE = app
+macx:CONFIG -= app_bundle
 
 #QMAKE_CXXFLAGS += -fopenmp
 #QMAKE_LFLAGS += -fopenmp

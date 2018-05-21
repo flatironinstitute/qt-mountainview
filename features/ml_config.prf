@@ -1,4 +1,4 @@
-macx:CONFIG -= app_bundle
+# This feature is loaded for *all* subdirs by top-level .qmake.conf file
 
 #configure directories
 ML_DIR=$$clean_path($${PWD}/..)

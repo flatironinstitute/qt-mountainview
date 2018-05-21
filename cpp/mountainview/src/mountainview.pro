@@ -12,6 +12,14 @@ MOC_DIR=../build
 TARGET = qt-mountainview
 TEMPLATE = app
 
+macx{
+    standalone: {
+        CONFIG += app_bundle
+    } else {
+        CONFIG -= app_bundle
+    }
+}
+
 RESOURCES += mountainview.qrc
 
 INCLUDEPATH += msv/plugins msv/views
