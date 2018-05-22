@@ -195,6 +195,9 @@ int main(int argc, char* argv[])
     CounterManager* counterManager = new CounterManager;
     registry.addAutoReleasedObject(counterManager);
 
+    qDebug().noquote() << QString("** qt-mountainview ; origin: %1 ; commit: %2").arg(GIT_ORIGIN).arg(GIT_COMMIT);
+    qDebug().noquote() << QString("** %1").arg(COMPILE_INFO);
+
     //The process manager
     QProcessManager* processManager = new QProcessManager;
     registry.addAutoReleasedObject(processManager);
@@ -266,7 +269,6 @@ int main(int argc, char* argv[])
         channel_colors << QColor(brighten(color_strings[i], 80));
 
     QList<QColor> label_colors = generate_colors_ahb();
-
     QString mv_fname;
     if (CLP.unnamed_parameters.value(0).endsWith(".mv")) {
         mv_fname = CLP.unnamed_parameters.value(0);

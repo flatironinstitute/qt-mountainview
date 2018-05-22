@@ -7,7 +7,30 @@ ML_BINDIR=$${ML_DIR}/bin
 ML_PACKAGESDIR=$${ML_DIR}/packages
 ML_KRONDIR=$${ML_DIR}/kron
 
+# Store git commit/repo origin/compile info in preprocessor directives.
+GIT_COMMIT_COMMAND = git --git-dir $$system_quote($$system_path($$ML_DIR/.git)) \
+--work-tree $$system_quote($$system_path($$ML_DIR/)) describe --always --all \
+--tags --long
+
+GIT_COMMIT = $$system($$GIT_COMMIT_COMMAND)
+DEFINES += "GIT_COMMIT=\"\\\"$$GIT_COMMIT\\\"\""
+
+# Store git commit/repo origin/compile info in preprocessor directives.
+GIT_HASH_COMMAND = git --git-dir $$system_quote($$system_path($$ML_DIR/.git)) \
+--work-tree $$system_quote($$system_path($$ML_DIR/)) rev-parse --short HEAD
+
+GIT_HASH= $$system($$GIT_HASH_COMMAND)
+DEFINES += "GIT_HASH=\"\\\"$$GIT_HASH\\\"\""
+
+
+GIT_ORIGIN_COMMAND = git --git-dir $$system_quote($$system_path($$ML_DIR/.git)) \
+--work-tree $$system_quote($$system_path($$ML_DIR/)) remote get-url origin
+
+GIT_ORIGIN = $$system($$GIT_ORIGIN_COMMAND)
+DEFINES += "GIT_ORIGIN=\"\\\"$$GIT_ORIGIN\\\"\""
+
+COMPILE_INFO = Compiled using Qt version: $$QT_VERSION ($$[QT_INSTALL_PREFIX] on host: \'$$QMAKE_HOST.name\'
+DEFINES += "COMPILE_INFO=\"\\\"$$COMPILE_INFO\\\"\""
+
 load(ml_functions.prf)
-
-
 
