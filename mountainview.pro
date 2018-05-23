@@ -58,7 +58,7 @@ standalone:unix{
     linux: {
         # standalone versions of mv and qt-mountainview are installed into ML_BINDIR_STANDALONE with correct linking and
         # Qt libs deployed by ml_qtdeploylinux feature. Here we just need to package them up.
-        QtDeploy.commands += "cd $${ML_BINDIR_STANDALONE} ; tar czvf $${ML_STANDALONE_NAME}-$${GIT_HASH}.tgz $${ML_STANDALONE_NAME} ; "
+        QtDeploy.commands += "cd $${ML_BINDIR_STANDALONE} ; tar czvf $${ML_STANDALONE_NAME}-linux-$${GIT_HASH}-Qt$${QT_VERSION}.tgz $${ML_STANDALONE_NAME} ; "
         QtDeploy.path = / # dummy path required for target to be valid
 	INSTALLS += QtDeploy
     }
@@ -68,7 +68,7 @@ standalone:unix{
         # Need to do this at top-level since we need to move mv.mp into qt-mountainview app bundle
         QtDeploy.commands += "cp $${ML_PACKAGESDIR}/mv/bin/mv.mp $${ML_BINDIR}/qt-mountainview.app/Contents/MacOS/ ;"
         QtDeploy.commands += "$$[QT_INSTALL_BINS]/macdeployqt $${ML_BINDIR}/qt-mountainview.app -always-overwrite -executable=$$ML_BINDIR/qt-mountainview.app/Contents/MacOS/mv.mp ;"
-        QtDeploy.commands += "cd $$ML_BINDIR ; ditto -c -k --sequesterRsrc --keepParent $$ML_BINDIR/qt-mountainview.app $${ML_STANDALONE_NAME}-$${GIT_HASH}.zip;"
+        QtDeploy.commands += "cd $$ML_BINDIR ; ditto -c -k --sequesterRsrc --keepParent $$ML_BINDIR/qt-mountainview.app $${ML_STANDALONE_NAME}-macOS-$${GIT_HASH}-Qt$${QT_VERSION}.zip;"
         QtDeploy.path = / # dummy path required for target to be valid
 
         INSTALLS += QtDeploy
