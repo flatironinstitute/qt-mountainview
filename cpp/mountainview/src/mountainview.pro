@@ -12,6 +12,23 @@ MOC_DIR=../build
 TARGET = qt-mountainview
 TEMPLATE = app
 
+target.path = $$ML_BINDIR
+
+macx{
+    standalone: {
+        CONFIG += app_bundle
+    } else {
+        CONFIG -= app_bundle
+    }
+}
+
+linux:standalone: {
+    CONFIG += ml_qtdeploylinux
+    target.path = $${ML_BINDIR_STANDALONE}
+}
+
+INSTALLS += target
+
 RESOURCES += mountainview.qrc
 
 INCLUDEPATH += msv/plugins msv/views
@@ -169,6 +186,3 @@ FORMS += \
 
 DISTFILES += \
     msv/views/curationprogram.js
-
-
-include(../../../cpp/installbin.pri)

@@ -5,10 +5,19 @@ QT += qml
 CONFIG += c++11
 
 DESTDIR = bin
+
+# linux standalone: install alongside qt-mountainview, where the Qt libs will be set up.
+standalone:!macx:{
+    CONFIG += ml_qtdeploylinux
+    target.path=$${ML_BINDIR_STANDALONE}
+    INSTALLS+=target
+}
+
 OBJECTS_DIR = build
 MOC_DIR= build
 TARGET = mv.mp
 TEMPLATE = app
+macx:CONFIG -= app_bundle
 
 #QMAKE_CXXFLAGS += -fopenmp
 #QMAKE_LFLAGS += -fopenmp

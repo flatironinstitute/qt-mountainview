@@ -1,0 +1,75 @@
+# Plan: put qt-mountainview and mv.mp in bin folder, alongside Qt folder
+
+# Easiest way to deploy Qt shared libs on Linux is just to copy *all* the
+# *.so files and links. (Some Qt libs have dependencies on other Qt libs,
+# and both Ubuntu 14.04 and 16.04 come with Qt5 installed, which means you
+# can't easily detect when you have not copied over all the libs or
+# plugins; this leads to using a mixture of libs from different releases.)
+#
+# NB: As of 5.5, the Qt plugin .so files expect the Qt shared libs to be at
+# a hardcoded relative location: "../../lib" (set via a RUNPATH on the plugin.so files),
+# so the libraries must be in a folder called 'lib', in the same directory as
+# the 'plugins' directory. It is also helpful to call the plugins folder
+# by its default name 'plugins' (otherwise would need to set this using
+# qt.conf):
+#
+# NB2: If you change the location of the plugins directory here, you must
+# also update the Resources/qt.conf file.
+ML_QTLIBS_SUBDIR = Qt/lib
+ML_QTPLUGINS_SUBDIR = Qt/plugins
+
+# Set up full install paths
+ML_QTLIBS_INSTALL_DIR = $${ML_BINDIR_STANDALONE}/$${ML_QTLIBS_SUBDIR}
+ML_QTPLUGINS_INSTALL_DIR = $${ML_BINDIR_STANDALONE}/$${ML_QTPLUGINS_SUBDIR}
+
+# use RPATH to tell all binaries to search our Qt install first,
+# using special $ORIGIN directive to ld (man ld.so)
+QMAKE_LFLAGS += '-Wl,-rpath,\'\$$ORIGIN/$${ML_QTLIBS_SUBDIR}\''
+
+# Create QtDeploy target to be built on 'make install'
+
+# Copy over Qt libs and plugins
+# (Use 'rsync' instead of 'cp' to avoid lots of unnecessary copying and to
+# preserve symlinks, permissions, etc.)
+
+QtDeploy.commands += mkdir -p $$ML_QTLIBS_INSTALL_DIR ;
+# exclude is a hackin lieu of actually figuring out which libs we need; this lib alone is >100MB
+QtDeploy.commands += rsync -a --exclude="*libQt5WebEngineCore*" --info=NAME $$[QT_INSTALL_LIBS]/*.so* $$ML_QTLIBS_INSTALL_DIR ;
+QtDeploy.commands += mkdir -p $$ML_QTPLUGINS_INSTALL_DIR ;
+QtDeploy.commands += rsync -a --info=NAME $$[QT_INSTALL_PLUGINS]/* $$ML_QTPLUGINS_INSTALL_DIR ;
+
+# Use Qt Resource System for the qt.conf file
+RESOURCES += \
+    $$ML_DIR/Resources/qtconf.qrc
+
+# Don't need this as mountainview does not use any 3rd-party libs. Leaving it here in case this changes
+#    # Remove any rpaths from our 3rd party libraries (since these 'pollute' the
+#    # library search path; e.g. libPythonQt typically has an rpath set to find Qt
+#    # libs at the compile location). Our libs will instead inherit the needed
+#    # search path from the executables. (Need to test for existence of chrpath first.)
+#    QtDeploy.commands += "command -v chrpath >/dev/null 2>&1 || { echo \"---> ---> \'chrpath\' command not found, install with \'apt-get install chrpath\'\" ; exit 1 ; } ;"
+#    QtDeploy.commands += "for lib in $${ML_LIB_INSTALL_DIR}/*.so*; do [ -f \$$lib ] || continue ; chrpath -d \$$lib; done ;"
+
+# Debug commands
+# message($$QtDeploy.commands)
+
+QtDeploy.path = / # dummy path (needed for QtDeploy to be a valid target)
+INSTALLS += QtDeploy
+
+# By default, Qmake includes the absolute path to the Qt libs used at
+# compile time, as an RPATH entry. We would like to suppress this,
+# which we can do by unsetting the QMAKE_RPATH variable:
+QMAKE_RPATH=
+
+# However this can break linking, since the linker uses -rpath entries to
+# resolve dependencies of shared libs. Fix it by passing the default libs
+# but **only for linking purposes**, (man ld, see '-rpath-link').
+QMAKE_LFLAGS += '-Wl,-rpath-link,$$[QT_INSTALL_LIBS]'
+
+# If all goes well (and you have the chrpath utility), you should see:
+#
+#   $ chrpath -l bin/linux/mountainview
+#   bin/linux/mountainview: RPATH=$$ORIGIN/Qt/lib
+
+# Let the user know that mountainview has been built to be used with a pre-deployed Qt:
+message('**Building $$TARGET to be used with a deployed Qt. Binaries may not work until you run \'make install\'**')
