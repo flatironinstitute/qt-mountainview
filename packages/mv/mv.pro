@@ -5,12 +5,14 @@ QT += qml
 CONFIG += c++11
 
 DESTDIR = bin
+
+# linux standalone: install to top-level bin dir, where the Qt libs will be set up.
 standalone:!macx:{
-    include($$ML_DIR/cpp/installbin.pri)
+    target.path=$$ML_BINDIR
+    INSTALLS+=target
     CONFIG += ml_qtdeploylinux
-    # message(mv.mp INSTALLS: $$INSTALLS)
-    # message(mv.mp target.path: $$target.path)
 }
+
 OBJECTS_DIR = build
 MOC_DIR= build
 TARGET = mv.mp

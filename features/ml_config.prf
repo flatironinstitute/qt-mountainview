@@ -3,7 +3,11 @@
 #configure directories
 ML_DIR=$$clean_path($${PWD}/..)
 ML_SRCDIR=$${ML_DIR}/cpp
-ML_BINDIR=$${ML_DIR}/bin
+standalone:!macx{
+    ML_BINDIR=$${ML_DIR}/bin/qt-mountainview/
+} else {
+    ML_BINDIR=$${ML_DIR}/bin
+}
 ML_PACKAGESDIR=$${ML_DIR}/packages
 ML_KRONDIR=$${ML_DIR}/kron
 

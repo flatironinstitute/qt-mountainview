@@ -180,6 +180,5 @@ FORMS += \
 DISTFILES += \
     msv/views/curationprogram.js
 
-
-include(../../../cpp/installbin.pri)
-
+target.path = $$ML_BINDIR
+INSTALLS += target
