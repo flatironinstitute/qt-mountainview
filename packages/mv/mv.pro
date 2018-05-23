@@ -5,6 +5,12 @@ QT += qml
 CONFIG += c++11
 
 DESTDIR = bin
+standalone:!macx:{
+    include($$ML_DIR/cpp/installbin.pri)
+    CONFIG += ml_qtdeploylinux
+    # message(mv.mp INSTALLS: $$INSTALLS)
+    # message(mv.mp target.path: $$target.path)
+}
 OBJECTS_DIR = build
 MOC_DIR= build
 TARGET = mv.mp

@@ -55,15 +55,15 @@ standalone:unix{
         error("Building standalone on $${QMAKE_HOST.os} requires Qt $${MAJ_REQ}.$${MIN_REQ} or greater, but Qt $$[QT_VERSION] was detected.")
     }
 
+    # (Linux standalone handled using ml_deployqtlinux feature)
+
     macx: {
+        # Need to do this at top-level since we need to move mv.mp into qt-mountainview app bundle
         QtDeploy.commands += "cp $${ML_PACKAGESDIR}/mv/bin/mv.mp $${ML_BINDIR}/qt-mountainview.app/Contents/MacOS/ ;"
         QtDeploy.commands += "$$[QT_INSTALL_BINS]/macdeployqt $${ML_BINDIR}/qt-mountainview.app -always-overwrite -executable=$$ML_BINDIR/qt-mountainview.app/Contents/MacOS/mv.mp"
         QtDeploy.path = / # dummy path required for target to be valid
 
         message(QtDeploy.commands=$$QtDeploy.commands)
         INSTALLS += QtDeploy
-
-    } else {
-        error('Linux standalone mode not implemented yet')
     }
 }

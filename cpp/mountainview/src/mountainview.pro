@@ -6,6 +6,8 @@ QMAKE_CXXFLAGS += -Wno-reorder #qaccordion
 # CONFIG += openmp ## removed open by jfm 5/18/2018
 CONFIG += mlcommon mvcommon taskprogress
 
+standalone:unix:!macx:CONFIG += ml_qtdeploylinux
+
 DESTDIR = ../bin
 OBJECTS_DIR = ../build
 MOC_DIR=../build
@@ -180,3 +182,4 @@ DISTFILES += \
 
 
 include(../../../cpp/installbin.pri)
+
