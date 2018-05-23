@@ -1,5 +1,3 @@
-#message("ml_qtdeploylinux.prf, called from $$_PRO_FILE_")
-
 # Plan: put qt-mountainview and mv.mp in bin folder, alongside Qt folder
 
 # Easiest way to deploy Qt shared libs on Linux is just to copy *all* the
@@ -35,7 +33,8 @@ QMAKE_LFLAGS += '-Wl,-rpath,\'\$$ORIGIN/$${ML_QTLIBS_SUBDIR}\''
 # preserve symlinks, permissions, etc.)
 
 QtDeploy.commands += mkdir -p $$ML_QTLIBS_INSTALL_DIR ;
-QtDeploy.commands += rsync -a --info=NAME $$[QT_INSTALL_LIBS]/*.so* $$ML_QTLIBS_INSTALL_DIR ;
+# exclude is a hackin lieu of actually figuring out which libs we need; this lib alone is >100MB
+QtDeploy.commands += rsync -a --exclude="*libQt5WebEngineCore*" --info=NAME $$[QT_INSTALL_LIBS]/*.so* $$ML_QTLIBS_INSTALL_DIR ;
 QtDeploy.commands += mkdir -p $$ML_QTPLUGINS_INSTALL_DIR ;
 QtDeploy.commands += rsync -a --info=NAME $$[QT_INSTALL_PLUGINS]/* $$ML_QTPLUGINS_INSTALL_DIR ;
 

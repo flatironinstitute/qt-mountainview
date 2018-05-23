@@ -6,8 +6,6 @@ QMAKE_CXXFLAGS += -Wno-reorder #qaccordion
 # CONFIG += openmp ## removed open by jfm 5/18/2018
 CONFIG += mlcommon mvcommon taskprogress
 
-standalone:unix:!macx:CONFIG += ml_qtdeploylinux
-
 DESTDIR = ../bin
 OBJECTS_DIR = ../build
 MOC_DIR=../build
@@ -20,7 +18,15 @@ macx{
     } else {
         CONFIG -= app_bundle
     }
+} else {
+    standalone: {
+        CONFIG += ml_qtdeploylinux
+        ML_BINDIR=$${ML_BINDIR_STANDALONE}
+    }
 }
+
+target.path = $$ML_BINDIR
+INSTALLS += target
 
 RESOURCES += mountainview.qrc
 
@@ -179,6 +185,3 @@ FORMS += \
 
 DISTFILES += \
     msv/views/curationprogram.js
-
-target.path = $$ML_BINDIR
-INSTALLS += target

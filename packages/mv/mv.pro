@@ -6,11 +6,11 @@ CONFIG += c++11
 
 DESTDIR = bin
 
-# linux standalone: install to top-level bin dir, where the Qt libs will be set up.
+# linux standalone: install alongside qt-mountainview, where the Qt libs will be set up.
 standalone:!macx:{
-    target.path=$$ML_BINDIR
-    INSTALLS+=target
     CONFIG += ml_qtdeploylinux
+    target.path=$${ML_BINDIR_STANDALONE}
+    INSTALLS+=target
 }
 
 OBJECTS_DIR = build

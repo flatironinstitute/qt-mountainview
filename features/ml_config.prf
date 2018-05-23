@@ -3,13 +3,13 @@
 #configure directories
 ML_DIR=$$clean_path($${PWD}/..)
 ML_SRCDIR=$${ML_DIR}/cpp
-standalone:!macx{
-    ML_BINDIR=$${ML_DIR}/bin/qt-mountainview/
-} else {
-    ML_BINDIR=$${ML_DIR}/bin
-}
+ML_BINDIR=$${ML_DIR}/bin
+ML_STANDALONE_NAME=qt-mountainview-standalone
+ML_BINDIR_STANDALONE=$${ML_BINDIR}/$${ML_STANDALONE_NAME}
 ML_PACKAGESDIR=$${ML_DIR}/packages
 ML_KRONDIR=$${ML_DIR}/kron
+
+
 
 # Store git commit/repo origin/compile info in preprocessor directives.
 GIT_COMMIT_COMMAND = git --git-dir $$system_quote($$system_path($$ML_DIR/.git)) \
