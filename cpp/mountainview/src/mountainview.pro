@@ -12,20 +12,21 @@ MOC_DIR=../build
 TARGET = qt-mountainview
 TEMPLATE = app
 
+target.path = $$ML_BINDIR
+
 macx{
     standalone: {
         CONFIG += app_bundle
     } else {
         CONFIG -= app_bundle
     }
-} else {
-    standalone: {
-        CONFIG += ml_qtdeploylinux
-        ML_BINDIR=$${ML_BINDIR_STANDALONE}
-    }
 }
 
-target.path = $$ML_BINDIR
+linux:standalone: {
+    CONFIG += ml_qtdeploylinux
+    target.path = $${ML_BINDIR_STANDALONE}
+}
+
 INSTALLS += target
 
 RESOURCES += mountainview.qrc

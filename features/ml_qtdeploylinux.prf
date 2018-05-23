@@ -19,8 +19,8 @@ ML_QTLIBS_SUBDIR = Qt/lib
 ML_QTPLUGINS_SUBDIR = Qt/plugins
 
 # Set up full install paths
-ML_QTLIBS_INSTALL_DIR = $${ML_BINDIR}/$${ML_QTLIBS_SUBDIR}
-ML_QTPLUGINS_INSTALL_DIR = $${ML_BINDIR}/$${ML_QTPLUGINS_SUBDIR}
+ML_QTLIBS_INSTALL_DIR = $${ML_BINDIR_STANDALONE}/$${ML_QTLIBS_SUBDIR}
+ML_QTPLUGINS_INSTALL_DIR = $${ML_BINDIR_STANDALONE}/$${ML_QTPLUGINS_SUBDIR}
 
 # use RPATH to tell all binaries to search our Qt install first,
 # using special $ORIGIN directive to ld (man ld.so)

@@ -58,7 +58,7 @@ standalone:unix{
     linux: {
         # standalone versions of mv and qt-mountainview are installed into ML_BINDIR_STANDALONE with correct linking and
         # Qt libs deployed by ml_qtdeploylinux feature. Here we just need to package them up.
-        QtDeploy.commands += "cd $${ML_BINDIR_STANDALONE} ; tar czvf $${ML_STANDALONE_NAME}-linux-$${GIT_HASH}-Qt$${QT_VERSION}.tgz $${ML_STANDALONE_NAME} ; "
+        QtDeploy.commands += "cd $${ML_BINDIR} ; tar czvf $${ML_STANDALONE_NAME}-linux-$${GIT_HASH}-Qt$${QT_VERSION}.tgz $${ML_STANDALONE_NAME} ; "
         QtDeploy.path = / # dummy path required for target to be valid
 	INSTALLS += QtDeploy
     }
