@@ -60,7 +60,8 @@ standalone:unix{
     macx: {
         # Need to do this at top-level since we need to move mv.mp into qt-mountainview app bundle
         QtDeploy.commands += "cp $${ML_PACKAGESDIR}/mv/bin/mv.mp $${ML_BINDIR}/qt-mountainview.app/Contents/MacOS/ ;"
-        QtDeploy.commands += "$$[QT_INSTALL_BINS]/macdeployqt $${ML_BINDIR}/qt-mountainview.app -always-overwrite -executable=$$ML_BINDIR/qt-mountainview.app/Contents/MacOS/mv.mp"
+        QtDeploy.commands += "$$[QT_INSTALL_BINS]/macdeployqt $${ML_BINDIR}/qt-mountainview.app -always-overwrite -executable=$$ML_BINDIR/qt-mountainview.app/Contents/MacOS/mv.mp ;"
+        QtDeploy.commands += "cd $$ML_BINDIR ; ditto -c -k --sequesterRsrc --keepParent $$ML_BINDIR/qt-mountainview.app qt-mountainview-standalone-$${GIT_HASH}.zip;"
         QtDeploy.path = / # dummy path required for target to be valid
 
         message(QtDeploy.commands=$$QtDeploy.commands)
