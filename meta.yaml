@@ -1,0 +1,34 @@
+# conda-build packaging config for qt-mountainview
+# TODO:
+#  -test on another system
+#  -seems to link against nvidia libs?
+#  -try macosx install using conda relocation (instead of macdeployqt)
+# conda packaging maintainer: Tom Davidson (tjd@alum.mit.edu)
+
+package:
+  name: qt-mountainview
+  version: "0.1.2"
+
+source:
+  git_rev: f4be5e7de62962504dfd8abff3859f3dd0a09543
+  git_url: . # relative path--this file is in git top-level
+
+requirements:
+  build:
+    - qt {{ qt }}
+  run:
+    - qt
+
+build:
+  skip: true # [not linux]
+  script:
+    - "qmake -r && make -j4 && make install"
+    - "MLJS_PKG_PATH=${PREFIX}/lib/mountainlab-js/packages/"
+    - "mkdir -p $MLJS_PKG_PATH"
+    - "cp packages/mv/bin/mv.mp $MLJS_PKG_PATH"
+    - "cp bin/qt-mountainview ${PREFIX}/bin"
+
+about:
+  home: https://github.com/flatironinstitute/qt-mountainview
+  license: Apache 2.0
+  summary: Visualization of spike sorting experiments to be used as a plugin package to mountainlab-js
