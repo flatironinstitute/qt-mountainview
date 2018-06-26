@@ -7,7 +7,7 @@
 
 package:
   name: qt-mountainview
-  version: "0.1"
+  version: "0.1.2"
 
 source:
   git_rev: f4be5e7de62962504dfd8abff3859f3dd0a09543
@@ -15,7 +15,7 @@ source:
 
 requirements:
   build:
-    - qt
+    - qt {{ qt }}
   run:
     - qt
 
