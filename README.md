@@ -8,6 +8,17 @@ Since ephys-viz is currently being developed, it does not have nearly as much fu
 
 ## Installation instructions
 
+### Pre-compiled release (recommended)
+
+Click on the "Releases' tab above, and download the latest precompiled binary version available. Uncompress the archive and 
+place it in your mountainlab processor search path (e.g. in `~/.mountainlab/packages`)
+
+### Install using conda
+
+`qt-mountainview` is available as a conda pacakge from the same channels as mountainlab. See the main mountainlab page for the latest instructions (the conda recipes are at [mountainlab-conda](https://github.com/flatironinstitute/mountainlab-conda)
+
+## Compiling yourself (not recommended)
+
 * Be sure to install [mountainlab-js](https://github.com/flatironinstitute/mountainlab-js) along with the plugin packages required for spike sorting (ml_ephys and ml_ms4alg).
 
 * Install Qt5 (see below)
@@ -18,7 +29,7 @@ Since ephys-viz is currently being developed, it does not have nearly as much fu
 
 * Add mountainlab-js/bin to your PATH environment variable
 
-## Installing Qt5 (a prerequisite for compiling qt-mountainview)
+#### Installing Qt5 (a prerequisite for compiling qt-mountainview)
 
 If you are on a later version of Ubuntu (such as 16.04), you can get away with installing Qt5 using the package manager (which is great news. For example, on 16.04, you can do the following:
 
@@ -40,3 +51,9 @@ We recommend installing this in your home directory, which does not require admi
 Once installed you will need to prepend the path to qmake to your PATH environment variable. On my system that is /home/magland/Qt/5.7/gcc_64/bin. You may instead do sudo ln -s /home/magland/Qt/5.7/gcc_64/bin/qmake /usr/local/bin/qmake.
 
 Anaconda users may need to un-export anaconda/miniconda path in order to make qt5 from the operating system available rather than the one supplied with anaconda. To do this, edit your ~/.bashrc file, comment out the export command containing anaconda or miniconda path, and open a new terminal. Make sure you are using your OS' installation by running which qmake
+
+### Building the standalone version:
+
+These are instructions for developers who may be building the standalone release. 
+
+* Add `CONFIG+=standalone` to the qmake command line. This will force qmake to bundle all the Qt libraries alongside the binary and link against them.
