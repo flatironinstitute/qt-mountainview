@@ -10,8 +10,7 @@ Since ephys-viz is currently being developed, it does not have nearly as much fu
 
 ### Pre-compiled release (recommended)
 
-Click on the "Releases' tab above, and download the latest precompiled binary version available. Uncompress the archive and 
-place it in your mountainlab processor search path (e.g. in `~/.mountainlab/packages`)
+Go to this repo's "Releases" page (https://github.com/flatironinstitute/qt-mountainview/releases), and download the latest precompiled binary version available. Uncompress the archive and place it in your mountainlab processor search path (e.g. in `~/.mountainlab/packages`)
 
 ### Install using conda
 
