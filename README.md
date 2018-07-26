@@ -2,19 +2,21 @@
 
 Visualization of spike sorting experiments to be used as a plugin package to mountainlab-js.
 
-This is an intermediate solution while we continue to develop ephys-viz and ev-mountainview.
+This is an intermediate solution while we continue to develop [ephys-viz](github.com/flatironinstitute/ephys-viz) and ev-mountainview.
 
-Since ephys-viz is currently being developed, it does not have nearly as much functionality as our previous viewer (mountainview). Therefore, you will probably also want to install the newly packaged version of this GUI called qt-mountainview, which is designed to be compatible with mountainlab-js.
+Since ephys-viz is currently being developed, it does not have nearly as much functionality as our previous viewer (mountainview). Therefore, you will probably also want to install this application, qt-mountainview, which has been modified to be compatible with mountainlab-js.
 
 ## Installation instructions
 
-### Pre-compiled release (recommended)
+`qt-mountainvew` is available for both Linux and MacOS.
 
-Go to this repo's "Releases" page (https://github.com/flatironinstitute/qt-mountainview/releases), and download the latest precompiled binary version available. Uncompress the archive and place it in your mountainlab processor search path (e.g. in `~/.mountainlab/packages`)
+### Install using conda (recommended)
 
-### Install using conda
+`qt-mountainview` is available as a [conda](conda.io) pacakge from the same channels as MountainLab. See the [main MountainLab page](https://github.com/flatironinstitute/mountainlab-js/blob/master/README.md) for the latest install instructions.
 
-`qt-mountainview` is available as a conda pacakge from the same channels as mountainlab. See the main mountainlab page for the latest instructions (the conda recipes are at [mountainlab-conda](https://github.com/flatironinstitute/mountainlab-conda)
+### Pre-compiled release
+
+Go to this repository's "Releases" page (https://github.com/flatironinstitute/qt-mountainview/releases), and download the latest precompiled binary version available for your OS. Uncompress the archive and place it in your mountainlab processor search path (e.g. in `~/.mountainlab/packages`). You will also likely want to add the folder containing qt-mountainview to your path, so you can call it from the command line.
 
 ## Compiling yourself (not recommended)
 
@@ -49,7 +51,9 @@ We recommend installing this in your home directory, which does not require admi
 
 Once installed you will need to prepend the path to qmake to your PATH environment variable. On my system that is /home/magland/Qt/5.7/gcc_64/bin. You may instead do sudo ln -s /home/magland/Qt/5.7/gcc_64/bin/qmake /usr/local/bin/qmake.
 
-Anaconda users may need to un-export anaconda/miniconda path in order to make qt5 from the operating system available rather than the one supplied with anaconda. To do this, edit your ~/.bashrc file, comment out the export command containing anaconda or miniconda path, and open a new terminal. Make sure you are using your OS' installation by running which qmake
+Anaconda users may need to un-export anaconda/miniconda path in order to make qt5 from the operating system available rather than the one supplied with anaconda. To do this, edit your ~/.bashrc file, comment out the export command containing anaconda or miniconda path, and open a new terminal. 
+
+Confirm you are using the intended installation of Qt by running which `qmake -v`, and look for the line beginning "Using Qt version <5.x.x> in </path/to/Qt_install>"
 
 ### Building the standalone version:
 
