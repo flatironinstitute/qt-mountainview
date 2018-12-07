@@ -54,7 +54,7 @@ QString get_http_text_curl(const QString& url)
 #endif
         return "";
     }
-    QString tmp_fname = CacheManager::globalInstance()->makeLocalFile("", CacheManager::ShortTerm);
+    QString tmp_fname = CacheManager::globalInstance()->makeLocalFile("");
     QString cmd = QString("curl \"%1\" > %2").arg(url).arg(tmp_fname);
     int exit_code = system(cmd.toLatin1().data());
     if (exit_code != 0) {

@@ -304,7 +304,7 @@ QString DiskReadMda::makePath() const
         return d->m_path;
     if (d->m_use_memory_mda) {
         QString checksum = compute_mda_checksum(d->m_memory_mda);
-        QString fname = CacheManager::globalInstance()->makeLocalFile(checksum + ".makePath.mda", CacheManager::ShortTerm);
+        QString fname = CacheManager::globalInstance()->makeLocalFile(checksum + ".makePath.mda");
         if (QFile::exists(fname))
             return fname;
         if (d->m_memory_mda.write64(fname + ".tmp")) {

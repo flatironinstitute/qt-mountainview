@@ -200,7 +200,7 @@ bool Mda32::write64(const char* path) const
 
 QByteArray Mda32::toByteArray8() const
 {
-    QString path = CacheManager::globalInstance()->makeLocalFile("", CacheManager::ShortTerm);
+    QString path = CacheManager::globalInstance()->makeLocalFile("");
     write8(path);
     QByteArray ret = MLUtil::readByteArray(path);
     QFile::remove(path);
@@ -209,7 +209,7 @@ QByteArray Mda32::toByteArray8() const
 
 QByteArray Mda32::toByteArray32() const
 {
-    QString path = CacheManager::globalInstance()->makeLocalFile("", CacheManager::ShortTerm);
+    QString path = CacheManager::globalInstance()->makeLocalFile("");
     write32(path);
     QByteArray ret = MLUtil::readByteArray(path);
     QFile::remove(path);
@@ -218,7 +218,7 @@ QByteArray Mda32::toByteArray32() const
 
 QByteArray Mda32::toByteArray64() const
 {
-    QString path = CacheManager::globalInstance()->makeLocalFile("", CacheManager::ShortTerm);
+    QString path = CacheManager::globalInstance()->makeLocalFile("");
     write64(path);
     QByteArray ret = MLUtil::readByteArray(path);
     QFile::remove(path);
@@ -227,7 +227,7 @@ QByteArray Mda32::toByteArray64() const
 
 bool Mda32::fromByteArray(const QByteArray& X)
 {
-    QString path = CacheManager::globalInstance()->makeLocalFile("", CacheManager::ShortTerm);
+    QString path = CacheManager::globalInstance()->makeLocalFile("");
     MLUtil::writeByteArray(path, X);
     bool ret = this->read(path);
     QFile::remove(path);

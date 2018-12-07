@@ -441,7 +441,6 @@ int main(int argc, char* argv[])
             mv2_fname = CacheManager::globalInstance()->makeLocalFile() + ".mv2";
             QString mv2_text = QJsonDocument(mv2).toJson();
             TextFile::write(mv2_fname, mv2_text);
-            CacheManager::globalInstance()->setTemporaryFileDuration(mv2_fname, 600);
         }
 
         if (!mv_fname.isEmpty()) {
@@ -1057,7 +1056,6 @@ void try_to_automatically_download_and_regenerate_prv_objects(QList<PrvRecord> p
             QString src_fname = CacheManager::globalInstance()->makeLocalFile() + ".tmp.prv";
             QString dst_fname = src_fname + ".recover";
             TextFile::write(src_fname, QJsonDocument(prv.original_object).toJson());
-            CacheManager::globalInstance()->setTemporaryFileDuration(src_fname, 600);
             QString cmd = QString("prv recover %1 %2").arg(src_fname).arg(dst_fname);
             system_call_keeping_gui_alive(cmd.toLatin1().data(), "Recovering " + prv.label);
             QFile::remove(src_fname);
