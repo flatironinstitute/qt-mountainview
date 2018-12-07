@@ -168,7 +168,11 @@ void sig_handler(int signum)
 QString get_config_fname() {
     QString config_fname=qgetenv("ML_CONFIG_FILE");
     if (config_fname.isEmpty()) {
-        config_fname=QDir::homePath()+"/.mountainlab/mountainlab.env";
+        QString conda_prefix=qgetenv("CONDA_PREFIX");
+        if (conda_prefix.isEmpty())
+            config_fname=QDir::homePath()+"/.mountainlab/mountainlab.env";
+        else
+            config_fname=conda_prefix+"/etc/mountainlab/mountainlab.env";
     }
     return config_fname;
 }
