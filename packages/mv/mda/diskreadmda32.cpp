@@ -314,26 +314,6 @@ QString DiskReadMda32::makePath() const
     if (d->m_use_memory_mda) {
         qWarning() << "Cannot make path for memory mda because we are not using the file cache. Aborting.";
         abort();
-        /*
-        QString checksum = compute_mda_checksum(d->m_memory_mda);
-        QString fname = CacheManager::globalInstance()->makeLocalFile(checksum + ".makePath.mda", CacheManager::ShortTerm);
-        if (QFile::exists(fname))
-            return fname;
-        if (d->m_memory_mda.write64(fname + ".tmp")) {
-            if (QFile::rename(fname + ".tmp", fname)) {
-                return fname;
-            }
-            else {
-                QFile::remove(fname + ".tmp");
-                return "";
-            }
-        }
-        else {
-            QFile::remove(fname);
-            QFile::remove(fname + ".tmp");
-            return "";
-        }
-        */
     }
     else if (d->m_use_concat) {
         QStringList list;

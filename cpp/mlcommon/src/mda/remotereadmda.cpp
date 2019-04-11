@@ -442,7 +442,7 @@ QString RemoteReadMdaPrivate::download_chunk_at_index(int ii)
         return "";
     }
     QString file_name = m_info.checksum + "-" + QString("%1-%2").arg(m_download_chunk_size).arg(ii);
-    QString fname = CacheManager::globalInstance()->makeLocalFile(file_name, CacheManager::ShortTerm);
+    QString fname = CacheManager::globalInstance()->makeLocalFile(file_name);
     if (QFile::exists(fname))
         return fname;
     QString url = m_path;

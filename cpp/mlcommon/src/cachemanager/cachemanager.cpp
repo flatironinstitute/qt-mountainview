@@ -34,7 +34,6 @@ class CacheManagerPrivate {
 public:
     CacheManager* q;
     QString m_local_base_path;
-    QString m_intermediate_file_folder;
 
     QString create_random_file_name();
 };
@@ -60,85 +59,20 @@ void CacheManager::setLocalBasePath(const QString& path)
             qCWarning(CM) << "Unable to create local base path" << path;
         }
     }
-    if (!QDir(path + "/tmp_short_term").exists()) {
-        QDir(path).mkdir("tmp_short_term");
-    }
-    if (!QDir(path + "/tmp_long_term").exists()) {
-        QDir(path).mkdir("tmp_long_term");
-    }
     QFile::Permissions perm = QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ExeUser | QFileDevice::ReadGroup | QFileDevice::WriteGroup | QFileDevice::ExeGroup | QFileDevice::ReadOther | QFileDevice::WriteOther | QFileDevice::ExeOther;
     QFile::setPermissions(path, perm);
-    QFile::setPermissions(path + "/tmp_short_term", perm);
-    QFile::setPermissions(path + "/tmp_long_term", perm);
 }
 
-void CacheManager::setIntermediateFileFolder(const QString& folder)
-{
-    d->m_intermediate_file_folder = folder;
-}
 
-/*
-QString CacheManager::makeRemoteFile(const QString& mlproxy_url, const QString& file_name_in, CacheManager::Duration duration)
-{
-    if (mlproxy_url.isEmpty()) {
-        return makeLocalFile(file_name_in, duration);
-    }
-
-    QString file_name = file_name_in;
-    if (file_name.isEmpty())
-        file_name = d->create_random_file_name();
-    QString str;
-    if (duration == ShortTerm)
-        str = "tmp_short_term";
-    else if (duration == LongTerm)
-        str = "tmp_long_term";
-    else {
-        qCWarning(CM) << "Unexpected problem" << __FUNCTION__ << __FILE__ << __LINE__;
-        return "";
-    }
-    return QString("%1/mdaserver/%2/%3").arg(mlproxy_url).arg(str).arg(file_name);
-}
-*/
-
-QString CacheManager::makeLocalFile(const QString& file_name_in, CacheManager::Duration duration)
+QString CacheManager::makeLocalFile(const QString& file_name_in)
 {
     QString file_name = file_name_in;
     if (file_name.isEmpty())
         file_name = d->create_random_file_name();
 
     QString str;
-    if (duration == ShortTerm)
-        str = "tmp_short_term";
-    else if (duration == LongTerm)
-        str = "tmp_long_term";
-    else {
-        qCWarning(CM) << "Unexpected problem" << __FUNCTION__ << __FILE__ << __LINE__;
-        return "";
-    }
-    QString ret = QString("%1/%2/%3").arg(localTempPath()).arg(str).arg(file_name);
 
-    return ret;
-}
-
-QString CacheManager::makeIntermediateFile(const QString& file_name_in)
-{
-    QString file_name = file_name_in;
-    if (file_name.isEmpty())
-        file_name = d->create_random_file_name();
-
-    QString dirname;
-    if (d->m_intermediate_file_folder.isEmpty()) {
-        dirname = localTempPath() + "/tmp_long_term";
-    }
-    else if (QFileInfo(d->m_intermediate_file_folder).isAbsolute())
-        dirname = d->m_intermediate_file_folder;
-    else {
-        QDir(localTempPath()).mkdir("/tmp_long_term");
-        dirname = localTempPath() + "/tmp_long_term/" + d->m_intermediate_file_folder;
-    }
-    QDir(QFileInfo(dirname).path()).mkdir(QFileInfo(dirname).fileName());
-
-    QString ret = QString("%1/%2").arg(dirname).arg(file_name);
+    QString ret = QString("%1/%2").arg(localTempPath()).arg(file_name);
 
     return ret;
 }
@@ -150,63 +84,6 @@ QString CacheManager::localTempPath()
         this->setLocalBasePath(DEFAULT_LOCAL_BASE_PATH);
     }
     return d->m_local_base_path;
-}
-
-void CacheManager::setTemporaryFileDuration(QString path, qint64 duration_sec)
-{
-    //duration_sec = 10;
-
-    QString str = MLUtil::computeSha1SumOfString(path);
-    if (!QFile::exists(QString("%1/expiration_records").arg(localTempPath())))
-        QDir(localTempPath()).mkdir("expiration_records");
-    QString fname = QString("%1/expiration_records/%2.json").arg(CacheManager::localTempPath()).arg(str);
-    QJsonObject obj;
-    if (QFile::exists(fname)) {
-        obj = QJsonDocument::fromJson(TextFile::read(fname).toUtf8()).object();
-    }
-    obj["path"] = path;
-    if (QFile::exists(path)) {
-        obj["creation_timestamp"] = QFileInfo(path).created().toString("yyyy-MM-dd hh:mm:ss");
-    }
-    else {
-        obj["creation_timestamp"] = "";
-    }
-    QDateTime timestamp = QFileInfo(path).created().addSecs(duration_sec);
-    obj["expiration_timestamp"] = timestamp.toString("yyyy-MM-dd hh:mm:ss");
-    ;
-
-    QString json = QJsonDocument(obj).toJson();
-    TextFile::write(fname, json);
-}
-
-void CacheManager::setTemporaryFileExpirePid(QString path, qint64 pid)
-{
-    QString str = MLUtil::computeSha1SumOfString(path);
-    if (!QFile::exists(QString("%1/expiration_records").arg(localTempPath())))
-        QDir(localTempPath()).mkdir("expiration_records");
-    QString fname = QString("%1/expiration_records/%2.json").arg(CacheManager::localTempPath()).arg(str);
-    QJsonObject obj;
-    if (QFile::exists(fname)) {
-        obj = QJsonDocument::fromJson(TextFile::read(fname).toUtf8()).object();
-    }
-    obj["path"] = path;
-    if (QFile::exists(path)) {
-        obj["creation_timestamp"] = QFileInfo(path).created().toString("yyyy-MM-dd hh:mm:ss");
-    }
-    else {
-        obj["creation_timestamp"] = "";
-    }
-    obj["expiration_pid"] = pid;
-
-    QString json = QJsonDocument(obj).toJson();
-    TextFile::write(fname, json);
-}
-
-QString CacheManager::makeExpiringFile(QString file_name, qint64 duration_sec)
-{
-    QString ret = this->makeLocalFile(file_name, ShortTerm);
-    this->setTemporaryFileDuration(ret, duration_sec);
-    return ret;
 }
 
 struct CMFileRec {
@@ -253,105 +130,6 @@ void sort_by_elapsed(QList<CMFileRec>& records)
 bool pid_exists(int pid)
 {
     return (kill(pid, 0) == 0);
-}
-
-bool is_expired(CMFileRec rec)
-{
-    QString fname = QFileInfo(rec.path).fileName();
-    QStringList list = fname.split("--");
-    if (list.count() < 2)
-        return false;
-    QStringList list2 = list.value(0).split(".");
-    foreach (QString str, list2) {
-        QStringList vals = str.split("=");
-        if (vals.count() == 2) {
-            if (vals.value(0) == "dursec") {
-                bigint numsec = vals.value(1).toLongLong();
-                if (numsec < rec.elapsed_sec)
-                    return true;
-            }
-            else if (vals.value(0) == "pid") {
-                int pid = vals.value(1).toInt();
-                if (!pid_exists(pid))
-                    return true;
-            }
-        }
-    }
-    return false;
-}
-
-void CacheManager::removeExpiredFiles()
-{
-    //get a list of the expiration records
-    QString dirname = QString("%1/expiration_records").arg(CacheManager::localTempPath());
-    QStringList list = QDir(dirname).entryList(QStringList("*.json"), QDir::Files, QDir::Name);
-    foreach (QString str, list) {
-        QString fname = QString("%1/%2").arg(dirname).arg(str);
-        //make sure it was created at least a few seconds ago
-        if (QFileInfo(fname).lastModified().secsTo(QDateTime::currentDateTime()) > 3) {
-            QString json = TextFile::read(fname);
-            QJsonObject obj = QJsonDocument::fromJson(json.toUtf8()).object();
-            QString path0 = obj["path"].toString();
-            QString creation_timestamp_str = obj["creation_timestamp"].toString();
-            //QDateTime creation_timestamp=QDateTime::fromString(creation_timestamp_str,"yyyy-MM-dd hh:mm:ss");
-            QString expiration_timestamp_str = obj["expiration_timestamp"].toString();
-            QDateTime expiration_timestamp = QDateTime::fromString(expiration_timestamp_str, "yyyy-MM-dd hh:mm:ss");
-            int expiration_pid = obj["expiration_pid"].toInt();
-            if (QFile(path0).exists()) {
-                //the temporary file exists
-                bool ok = true;
-                if (!creation_timestamp_str.isEmpty()) {
-                    //there was a creation timestamp. let's see if it matches.
-                    if (QFileInfo(path0).created().toString("yyyy-MM-dd hh:mm:ss") != creation_timestamp_str) {
-                        qCWarning(CM) << QFileInfo(path0).created().toString("yyyy-MM-dd hh:mm:ss") << creation_timestamp_str << path0;
-                        qCWarning(CM) << "Temporary file creation timestamp does not match that in the expiration record. Removing expiration record.";
-                        QFile::remove(fname);
-                        ok = false;
-                    }
-                }
-                if ((ok) && (!expiration_timestamp_str.isEmpty())) {
-                    //an expiration time exists
-                    if (expiration_timestamp.secsTo(QDateTime::currentDateTime()) > 0) {
-                        //the file is expired
-                        if (QFile::remove(path0)) {
-                            QFile::remove(fname);
-                        }
-                        else {
-                            qCWarning(CM) << "Unable to remove expired temporary file: " + path0;
-                        }
-                    }
-                }
-                if ((ok) && (expiration_pid)) {
-                    if (!pid_exists(expiration_pid)) {
-                        //the pid no longer exists
-                        if (QFile::remove(path0)) {
-                            QFile::remove(fname);
-                        }
-                        else {
-                            qCWarning(CM) << "Unable to remove expired temporary file: " + path0;
-                        }
-                    }
-                }
-            }
-            else {
-                //the temporary file does not exist
-                if (QFileInfo(fname).lastModified().secsTo(QDateTime::currentDateTime()) > 10) {
-                    //the expiration record has been around for at least 10 seconds
-                    QFile::remove(fname);
-                }
-            }
-        }
-    }
-
-    /*
-    QList<CMFileRec> recs=get_file_records(this->localTempPath()+"/expiring");
-    for (int i=0; i<recs.count(); i++) {
-        CMFileRec rec=recs[i];
-        if (is_expired(rec)) {
-            QFile::remove(rec.path);
-        }
-    }
-    */
 }
 
 void CacheManager::cleanUp()

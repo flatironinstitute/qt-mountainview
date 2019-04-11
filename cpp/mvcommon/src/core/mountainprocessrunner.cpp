@@ -327,7 +327,7 @@ QString MountainProcessRunnerPrivate::create_temporary_output_file_name(const QS
     }
 
     QString file_name = QString("%1_%2.tmp").arg(MLUtil::computeSha1SumOfString(str)).arg(parameter_name);
-    //QString ret = CacheManager::globalInstance()->makeRemoteFile(mlproxy_url, file_name, CacheManager::LongTerm);
-    QString ret = CacheManager::globalInstance()->makeLocalFile(file_name, CacheManager::LongTerm);
+    //QString ret = CacheManager::globalInstance()->makeRemoteFile(mlproxy_url, file_name);
+    QString ret = CacheManager::globalInstance()->makeLocalFile(file_name);
     return ret;
 }
